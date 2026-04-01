@@ -18,6 +18,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
 local VirtualUser = game:GetService("VirtualUser")
 local player = Players.LocalPlayer
+local eggsFolder = workspace:WaitForChild("Eggs")
 
 -- =========================
 -- FIND REMOTES
@@ -53,11 +54,13 @@ local antiAFK_Mobile = false
 -- UI (ONLY SET VARIABLES)
 -- =========================
 
-FarmTab:CreateToggle({
-	Name = "Auto Hatch",
-	CurrentValue = false,
-	Callback = function(v)
-		autoEgg = v
+FarmTab:CreateDropdown({
+	Name = "Select Egg",
+	Options = eggList,
+	CurrentOption = eggList[1],
+	Callback = function(option)
+		selectedEgg = option
+		print("Selected:", selectedEgg)
 	end
 })
 
@@ -96,13 +99,24 @@ UtilityTab:CreateToggle({
 -- =========================
 -- LOOPS
 -- =========================
+--BUILD EGG LIST
+local eggList = {}
+
+for _,egg in ipairs(eggsFolder:GetChildren()) do
+	table.insert(eggList, egg.Name)
+end
+
+print("Eggs found:", eggList)
+local selectedEgg = eggList[1]
 
 -- AUTO HATCH
 task.spawn(function()
 	while true do
 		if autoEgg and openEggRemote then
 			pcall(function()
-				openEggRemote:InvokeServer("Azteca", 11)
+				if selectedEgg then
+					openEggRemote:InvokeServer(selectedEgg, 11)
+				end
 			end)
 		end
 		task.wait(0.1)
