@@ -43,21 +43,44 @@ print("Remotes:", openEggRemote, startRemote, finishRemote, totemRemote)
 -- EGG SYSTEM (FIXED)
 -- =========================
 
-local eggsFolder = workspace:WaitForChild("Eggs")
-local eggList = {}
+-- =========================
+-- EGG SYSTEM (SAFE)
+-- =========================
 
-for _,egg in ipairs(eggsFolder:GetChildren()) do
-	-- CLEAN NAME (removes "Egg" if needed)
-	local cleanName = egg.Name:gsub("Egg","")
-	table.insert(eggList, cleanName)
-end
-
-table.sort(eggList)
-
-print("Eggs found:", unpack(eggList))
-
-local selectedEgg = eggList[1] or "Azteca"
+local eggList = {"Azteca"} -- fallback so UI NEVER breaks
+local selectedEgg = "Azteca"
 local eggAmount = 11
+
+task.spawn(function()
+	local success, err = pcall(function()
+		local eggsFolder = workspace:FindFirstChild("Eggs")
+
+		if eggsFolder then
+			local tempList = {}
+
+			for _,egg in ipairs(eggsFolder:GetChildren()) do
+				local cleanName = egg.Name:gsub("Egg","")
+				table.insert(tempList, cleanName)
+			end
+
+			if #tempList > 0 then
+				table.sort(tempList)
+				eggList = tempList
+				selectedEgg = eggList[1]
+
+				print("Eggs found:", unpack(eggList))
+			else
+				warn("Egg folder empty")
+			end
+		else
+			warn("Eggs folder not found")
+		end
+	end)
+
+	if not success then
+		warn("Egg system error:", err)
+	end
+end)
 
 -- =========================
 -- STATE VARIABLES
