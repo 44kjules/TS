@@ -52,7 +52,10 @@ local antiAFK_Mobile = false
 local eggList = {
 	"Azteca",
 	"Viking",
-	"Space"
+	"Space",
+	"Egg Basket",
+	"Garden Fairy",
+	"Spring Blossom"
 }
 
 local selectedEgg = "Azteca"
