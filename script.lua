@@ -18,7 +18,6 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
 local VirtualUser = game:GetService("VirtualUser")
 local player = Players.LocalPlayer
-local eggsFolder = workspace:WaitForChild("Eggs")
 
 -- =========================
 -- FIND REMOTES
@@ -41,6 +40,26 @@ end
 print("Remotes:", openEggRemote, startRemote, finishRemote, totemRemote)
 
 -- =========================
+-- EGG SYSTEM (FIXED)
+-- =========================
+
+local eggsFolder = workspace:WaitForChild("Eggs")
+local eggList = {}
+
+for _,egg in ipairs(eggsFolder:GetChildren()) do
+	-- CLEAN NAME (removes "Egg" if needed)
+	local cleanName = egg.Name:gsub("Egg","")
+	table.insert(eggList, cleanName)
+end
+
+table.sort(eggList)
+
+print("Eggs found:", unpack(eggList))
+
+local selectedEgg = eggList[1] or "Azteca"
+local eggAmount = 11
+
+-- =========================
 -- STATE VARIABLES
 -- =========================
 
@@ -51,16 +70,33 @@ local antiAFK_PC = false
 local antiAFK_Mobile = false
 
 -- =========================
--- UI (ONLY SET VARIABLES)
+-- UI
 -- =========================
 
 FarmTab:CreateDropdown({
 	Name = "Select Egg",
 	Options = eggList,
-	CurrentOption = eggList[1],
+	CurrentOption = selectedEgg,
 	Callback = function(option)
 		selectedEgg = option
-		print("Selected:", selectedEgg)
+		print("Selected Egg:", selectedEgg)
+	end
+})
+
+FarmTab:CreateSlider({
+	Name = "Egg Amount",
+	Range = {1, 11},
+	CurrentValue = 11,
+	Callback = function(v)
+		eggAmount = v
+	end
+})
+
+FarmTab:CreateToggle({
+	Name = "Auto Hatch",
+	CurrentValue = false,
+	Callback = function(v)
+		autoEgg = v
 	end
 })
 
@@ -99,24 +135,13 @@ UtilityTab:CreateToggle({
 -- =========================
 -- LOOPS
 -- =========================
---BUILD EGG LIST
-local eggList = {}
-
-for _,egg in ipairs(eggsFolder:GetChildren()) do
-	table.insert(eggList, egg.Name)
-end
-
-print("Eggs found:", eggList)
-local selectedEgg = eggList[1]
 
 -- AUTO HATCH
 task.spawn(function()
 	while true do
-		if autoEgg and openEggRemote then
+		if autoEgg and openEggRemote and selectedEgg then
 			pcall(function()
-				if selectedEgg then
-					openEggRemote:InvokeServer(selectedEgg, 11)
-				end
+				openEggRemote:InvokeServer(selectedEgg, eggAmount)
 			end)
 		end
 		task.wait(0.1)
@@ -161,7 +186,7 @@ task.spawn(function()
 
 	while true do
 		if autoTotem then
-			local success, err = pcall(function()
+			pcall(function()
 				totemRemote:InvokeServer(
 					"TotemOfLuck",
 					{
@@ -171,12 +196,7 @@ task.spawn(function()
 					}
 				)
 			end)
-
-			if not success then
-				warn("Totem Error:", err)
-			end
 		end
-
 		task.wait(1)
 	end
 end)
