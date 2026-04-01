@@ -23,7 +23,7 @@ local player = Players.LocalPlayer
 -- FIND REMOTES
 -- =========================
 
-local openEggRemote, startRemote, finishRemote
+local openEggRemote, startRemote, finishRemote, totemRemote
 
 for _,v in ipairs(ReplicatedStorage:GetDescendants()) do
 	if v.Name == "OpenEgg" then
@@ -32,43 +32,12 @@ for _,v in ipairs(ReplicatedStorage:GetDescendants()) do
 		startRemote = v
 	elseif v.Name == "FinishMinigame" then
 		finishRemote = v
+	elseif v.Name == "PlaceTotem" and v:IsA("RemoteFunction") then
+		totemRemote = v
 	end
 end
 
-print("Remotes:", openEggRemote, startRemote, finishRemote)
-
--- =========================
--- DEBUG: PRINT ALL EGGS
--- =========================
-
-task.spawn(function()
-	task.wait(2)
-
-	local eggsFolder = workspace:FindFirstChild("Eggs")
-	if eggsFolder then
-		print("==== WORKSPACE EGGS ====")
-		for _,egg in ipairs(eggsFolder:GetChildren()) do
-			print(egg.Name)
-		end
-		print("==== END ====")
-	else
-		warn("Eggs folder not found")
-	end
-end)
-
--- =========================
--- MANUAL EGG LIST (YOU EDIT THIS)
--- =========================
-
-local eggList = {
-	"Azteca",
-	"Viking",
-	"Space",
-	"Desert"
-}
-
-local selectedEgg = "Azteca"
-local eggAmount = 11
+print("Remotes:", openEggRemote, startRemote, finishRemote, totemRemote)
 
 -- =========================
 -- STATE VARIABLES
@@ -76,31 +45,22 @@ local eggAmount = 11
 
 local autoEgg = false
 local autoMini = false
+local autoTotem = false
 local antiAFK_PC = false
 local antiAFK_Mobile = false
+-- EGG SETTINGS (MANUAL)
+local eggList = {
+	"Azteca",
+	"Viking",
+	"Space"
+}
+
+local selectedEgg = "Azteca"
+local eggAmount = 13
 
 -- =========================
--- UI
+-- UI (ONLY SET VARIABLES)
 -- =========================
-
-FarmTab:CreateDropdown({
-	Name = "Select Egg",
-	Options = eggList,
-	CurrentOption = selectedEgg,
-	Callback = function(option)
-		selectedEgg = option[1] or option -- FIXED
-		print("Selected Egg:", selectedEgg)
-	end
-})
-
-FarmTab:CreateSlider({
-	Name = "Egg Amount",
-	Range = {1, 11},
-	CurrentValue = 11,
-	Callback = function(v)
-		eggAmount = v
-	end
-})
 
 FarmTab:CreateToggle({
 	Name = "Auto Hatch",
@@ -115,6 +75,14 @@ FarmTab:CreateToggle({
 	CurrentValue = false,
 	Callback = function(v)
 		autoMini = v
+	end
+})
+
+FarmTab:CreateToggle({
+	Name = "Auto Totem",
+	CurrentValue = false,
+	Callback = function(v)
+		autoTotem = v
 	end
 })
 
@@ -134,6 +102,25 @@ UtilityTab:CreateToggle({
 	end
 })
 
+FarmTab:CreateDropdown({
+	Name = "Select Egg",
+	Options = eggList,
+	CurrentOption = selectedEgg,
+	Callback = function(option)
+		selectedEgg = option[1] or option
+		print("Selected Egg:", selectedEgg)
+	end
+})
+
+FarmTab:CreateSlider({
+	Name = "Egg Amount",
+	Range = {1, 13},
+	CurrentValue = 13,
+	Callback = function(v)
+		eggAmount = v
+	end
+})
+
 -- =========================
 -- LOOPS
 -- =========================
@@ -142,8 +129,6 @@ UtilityTab:CreateToggle({
 task.spawn(function()
 	while true do
 		if autoEgg and openEggRemote then
-			print("Hatching:", selectedEgg, eggAmount)
-
 			pcall(function()
 				openEggRemote:InvokeServer(selectedEgg, eggAmount)
 			end)
@@ -168,6 +153,42 @@ task.spawn(function()
 			end
 
 			task.wait(60)
+		end
+
+		task.wait(1)
+	end
+end)
+
+-- AUTO TOTEM
+task.spawn(function()
+	while not totemRemote do
+		for _,v in ipairs(ReplicatedStorage:GetDescendants()) do
+			if v.Name == "PlaceTotem" and v:IsA("RemoteFunction") then
+				totemRemote = v
+				break
+			end
+		end
+		task.wait(1)
+	end
+
+	print("Totem Remote Found:", totemRemote)
+
+	while true do
+		if autoTotem then
+			local success, err = pcall(function()
+				totemRemote:InvokeServer(
+					"TotemOfLuck",
+					{
+						X = -31486.48,
+						Y = 5808.20,
+						Z = 3577.79
+					}
+				)
+			end)
+
+			if not success then
+				warn("Totem Error:", err)
+			end
 		end
 
 		task.wait(1)
