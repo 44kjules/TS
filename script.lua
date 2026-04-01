@@ -49,7 +49,7 @@ print("Remotes:", openEggRemote, startRemote, finishRemote, totemRemote)
 
 local eggList = {"Azteca"} -- fallback so UI NEVER breaks
 local selectedEgg = "Azteca"
-local eggAmount = 11
+local eggAmount = 13
 
 task.spawn(function()
 	local success, err = pcall(function()
@@ -108,8 +108,8 @@ FarmTab:CreateDropdown({
 
 FarmTab:CreateSlider({
 	Name = "Egg Amount",
-	Range = {1, 11},
-	CurrentValue = 11,
+	Range = {1, 13},
+	CurrentValue = 13,
 	Callback = function(v)
 		eggAmount = v
 	end
@@ -165,6 +165,7 @@ task.spawn(function()
 		if autoEgg and openEggRemote and selectedEgg then
 			pcall(function()
 				openEggRemote:InvokeServer(selectedEgg, eggAmount)
+						print("AutoEgg:", autoEgg, selectedEgg, eggAmount)
 			end)
 		end
 		task.wait(0.1)
