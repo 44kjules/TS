@@ -217,4 +217,27 @@ player.Idled:Connect(function()
 	end
 end)
 
+
+--AUTO TAP
+local autoTap = false
+local tapRemote = ReplicatedStorage:WaitForChild("f3515e43-0548-4891-aa22-2b144efdb86d"):WaitForChild("Events"):WaitForChild("")
+
+FarmTab:CreateToggle({
+    Name = "Auto Tap",
+    CurrentValue = false,
+    Callback = function(v)
+        autoTap = v
+        if autoTap then
+            task.spawn(function()
+                while autoTap do
+                    pcall(function()
+                        tapRemote:FireServer(true, nil, true)
+                    end)
+                    task.wait(0.1)
+                end
+            end)
+        end
+    end
+})
+
 print("Jules Hub Loaded")
