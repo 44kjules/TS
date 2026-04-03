@@ -37,27 +37,18 @@ for _,v in ipairs(ReplicatedStorage:GetDescendants()) do
 	end
 end
 
-local tapRemote
-
+-- TAP REMOTE (SEPARATE - USES INDEX 27)
 task.spawn(function()
 	local eventsFolder = ReplicatedStorage
-		:WaitForChild("f3515e43-0548-4891-aa22-2b144efdb86d")
+		:WaitForChild("8e451043-6fff-443b-9aaa-8321310685ea")
 		:WaitForChild("Events")
 
-	print("Events folder found:", eventsFolder)
-
-	-- DEBUG: print all children with index
-	for i,v in ipairs(eventsFolder:GetChildren()) do
-		print(i, v, v.Name)
-	end
-
-	-- WAIT a bit to ensure everything loads
 	task.wait(1)
 
 	local children = eventsFolder:GetChildren()
 	tapRemote = children[27]
 
-	print("Selected Tap Remote:", tapRemote)
+	print("Tap Remote:", tapRemote)
 end)
 
 print("Remotes:", openEggRemote, startRemote, finishRemote, totemRemote)
@@ -72,6 +63,7 @@ local autoTotem = false
 local antiAFK_PC = false
 local antiAFK_Mobile = false
 local autoTap = false
+local tapRemote = nil
 -- EGG SETTINGS (MANUAL)
 local eggList = {
 	"Azteca",
@@ -248,8 +240,12 @@ player.Idled:Connect(function()
 		end
 	end
 end)
----atuotap
 
+-- =========================
+-- AUTO TAP
+-- =========================
+
+-- AUTO TAP
 task.spawn(function()
 	while true do
 		if autoTap and tapRemote then
@@ -257,8 +253,9 @@ task.spawn(function()
 				tapRemote:FireServer(true, nil, true)
 			end)
 		end
-		task.wait(0.05) -- fast but safe
+		task.wait(0.05)
 	end
 end)
+
 
 print("Jules Hub Loaded")
