@@ -37,14 +37,7 @@ for _,v in ipairs(ReplicatedStorage:GetDescendants()) do
 	end
 end
 
-print("Remotes:", openEggRemote, startRemote, finishRemote, totemRemote)
-
--- =========================
--- TAP REMOTE (INDEX 27)
--- =========================
-
-local tapRemote = nil
-
+-- TAP REMOTE (SEPARATE - USES INDEX 27)
 task.spawn(function()
 	local eventsFolder = ReplicatedStorage
 		:WaitForChild("8e451043-6fff-443b-9aaa-8321310685ea")
@@ -58,6 +51,8 @@ task.spawn(function()
 	print("Tap Remote:", tapRemote)
 end)
 
+print("Remotes:", openEggRemote, startRemote, finishRemote, totemRemote)
+
 -- =========================
 -- STATE VARIABLES
 -- =========================
@@ -65,12 +60,11 @@ end)
 local autoEgg = false
 local autoMini = false
 local autoTotem = false
-local autoTap = false
-local tapRemote = nil
 local antiAFK_PC = false
 local antiAFK_Mobile = false
-
--- EGG SETTINGS
+local autoTap = false
+local tapRemote = nil
+-- EGG SETTINGS (MANUAL)
 local eggList = {
 	"Azteca",
 	"Viking",
@@ -82,7 +76,7 @@ local selectedEgg = "Azteca"
 local eggAmount = 13
 
 -- =========================
--- UI
+-- UI (ONLY SET VARIABLES)
 -- =========================
 
 FarmTab:CreateToggle({
@@ -90,14 +84,6 @@ FarmTab:CreateToggle({
 	CurrentValue = false,
 	Callback = function(v)
 		autoEgg = v
-	end
-})
-
-FarmTab:CreateToggle({
-	Name = "Auto Tap",
-	CurrentValue = false,
-	Callback = function(v)
-		autoTap = v
 	end
 })
 
@@ -152,6 +138,14 @@ FarmTab:CreateSlider({
 	end
 })
 
+FarmTab:CreateToggle({
+	Name = "Auto Tap",
+	CurrentValue = false,
+	Callback = function(v)
+		autoTap = v
+	end
+})
+
 -- =========================
 -- LOOPS
 -- =========================
@@ -165,18 +159,6 @@ task.spawn(function()
 			end)
 		end
 		task.wait(0.1)
-	end
-end)
-
--- AUTO TAP
-task.spawn(function()
-	while true do
-		if autoTap and tapRemote then
-			pcall(function()
-				tapRemote:FireServer(true, nil, true)
-			end)
-		end
-		task.wait(0.05)
 	end
 end)
 
@@ -218,7 +200,7 @@ task.spawn(function()
 
 	while true do
 		if autoTotem then
-			pcall(function()
+			local success, err = pcall(function()
 				totemRemote:InvokeServer(
 					"TotemOfLuck",
 					{
@@ -228,6 +210,10 @@ task.spawn(function()
 					}
 				)
 			end)
+
+			if not success then
+				warn("Totem Error:", err)
+			end
 		end
 
 		task.wait(1)
@@ -252,6 +238,19 @@ player.Idled:Connect(function()
 		if hum then
 			hum.Jump = true
 		end
+	end
+end)
+
+
+-- AUTO TAP
+task.spawn(function()
+	while true do
+		if autoTap and tapRemote then
+			pcall(function()
+				tapRemote:FireServer(true, nil, true)
+			end)
+		end
+		task.wait(0.05)
 	end
 end)
 
