@@ -256,9 +256,15 @@ task.spawn(function()
 	end
 end)
 
-
-for i,v in ipairs(eventsFolder:GetChildren()) do
-	print(i, v)
-end
-
+FarmTab:CreateButton({
+	Name = "TEST TAP",
+	Callback = function()
+		print("Testing tap remote:", tapRemote)
+		if tapRemote then
+			tapRemote:FireServer(true, nil, true)
+		else
+			warn("tapRemote is nil")
+		end
+	end
+})
 print("Jules Hub Loaded")
