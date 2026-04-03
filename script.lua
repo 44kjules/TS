@@ -37,6 +37,24 @@ for _,v in ipairs(ReplicatedStorage:GetDescendants()) do
 	end
 end
 
+local tapRemote
+
+local eventsFolder = nil
+
+for _,v in ipairs(ReplicatedStorage:GetDescendants()) do
+	if v.Name == "Events" then
+		eventsFolder = v
+		break
+	end
+end
+
+if eventsFolder then
+	local children = eventsFolder:GetChildren()
+	tapRemote = children[27]
+end
+
+print("Tap Remote:", tapRemote)
+
 print("Remotes:", openEggRemote, startRemote, finishRemote, totemRemote)
 
 -- =========================
@@ -48,6 +66,7 @@ local autoMini = false
 local autoTotem = false
 local antiAFK_PC = false
 local antiAFK_Mobile = false
+local autoTap = false
 -- EGG SETTINGS (MANUAL)
 local eggList = {
 	"Azteca",
@@ -119,6 +138,14 @@ FarmTab:CreateSlider({
 	CurrentValue = 13,
 	Callback = function(v)
 		eggAmount = v
+	end
+})
+
+FarmTab:CreateToggle({
+	Name = "Auto Tap",
+	CurrentValue = false,
+	Callback = function(v)
+		autoTap = v
 	end
 })
 
@@ -217,27 +244,15 @@ player.Idled:Connect(function()
 	end
 end)
 
-
---AUTO TAP
-local autoTap = false
-local tapRemote = ReplicatedStorage:WaitForChild("f3515e43-0548-4891-aa22-2b144efdb86d"):WaitForChild("Events"):WaitForChild("")
-
-FarmTab:CreateToggle({
-    Name = "Auto Tap",
-    CurrentValue = false,
-    Callback = function(v)
-        autoTap = v
-        if autoTap then
-            task.spawn(function()
-                while autoTap do
-                    pcall(function()
-                        tapRemote:FireServer(true, nil, true)
-                    end)
-                    task.wait(0.1)
-                end
-            end)
-        end
-    end
-})
+task.spawn(function()
+	while true do
+		if autoTap and tapRemote then
+			pcall(function()
+				tapRemote:FireServer(true, nil, true)
+			end)
+		end
+		task.wait(0.05) -- fast but safe
+	end
+end)
 
 print("Jules Hub Loaded")
