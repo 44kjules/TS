@@ -66,6 +66,7 @@ local autoEgg = false
 local autoMini = false
 local autoTotem = false
 local autoTap = false
+local tapRemote = nil
 local antiAFK_PC = false
 local antiAFK_Mobile = false
 
