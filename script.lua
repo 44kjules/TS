@@ -243,6 +243,7 @@ player.Idled:Connect(function()
 		end
 	end
 end)
+---atuotap
 
 task.spawn(function()
 	while true do
@@ -254,5 +255,10 @@ task.spawn(function()
 		task.wait(0.05) -- fast but safe
 	end
 end)
+
+
+for i,v in ipairs(eventsFolder:GetChildren()) do
+	print(i, v)
+end
 
 print("Jules Hub Loaded")
