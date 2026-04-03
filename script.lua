@@ -39,21 +39,26 @@ end
 
 local tapRemote
 
-local eventsFolder = nil
+task.spawn(function()
+	local eventsFolder = ReplicatedStorage
+		:WaitForChild("f3515e43-0548-4891-aa22-2b144efdb86d")
+		:WaitForChild("Events")
 
-for _,v in ipairs(ReplicatedStorage:GetDescendants()) do
-	if v.Name == "Events" then
-		eventsFolder = v
-		break
+	print("Events folder found:", eventsFolder)
+
+	-- DEBUG: print all children with index
+	for i,v in ipairs(eventsFolder:GetChildren()) do
+		print(i, v, v.Name)
 	end
-end
 
-if eventsFolder then
+	-- WAIT a bit to ensure everything loads
+	task.wait(1)
+
 	local children = eventsFolder:GetChildren()
 	tapRemote = children[27]
-end
 
-print("Tap Remote:", tapRemote)
+	print("Selected Tap Remote:", tapRemote)
+end)
 
 print("Remotes:", openEggRemote, startRemote, finishRemote, totemRemote)
 
@@ -256,15 +261,4 @@ task.spawn(function()
 	end
 end)
 
-FarmTab:CreateButton({
-	Name = "TEST TAP",
-	Callback = function()
-		print("Testing tap remote:", tapRemote)
-		if tapRemote then
-			tapRemote:FireServer(true, nil, true)
-		else
-			warn("tapRemote is nil")
-		end
-	end
-})
 print("Jules Hub Loaded")
