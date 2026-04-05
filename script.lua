@@ -145,12 +145,11 @@ FarmTab:CreateDropdown({
 })
 
 FarmTab:CreateDropdown({
-	Name = "Select Egg Amount",
-	Options = eggAmount,
-	CurrentOption = eggAmount,
-	Callback = function(option)
-		eggAmount = option[1] or option
-		print("Selected Egg Amount:", eggAmount)
+	Name = "Egg Amount",
+	Options = {"1","2","3","4","5","6","7","8","9","10","11","12","13"},
+	CurrentOption = {"13"},
+	Callback = function(v)
+		eggAmount = tonumber(v[1])
 	end
 })
 
