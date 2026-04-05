@@ -41,7 +41,7 @@ local eggList = {
 
 local selectedEgg = "Spring Blossom"
 local eggAmountList = {"1","7","13"}
-eggAmount = "13"
+eggAmount = 13
 -- =========================
 -- FIND REMOTES
 -- =========================
