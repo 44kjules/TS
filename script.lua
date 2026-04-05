@@ -38,7 +38,10 @@ local eggList = {
 	"Space",
 	"Spring Blossom"
 }
-
+-- EGG AMOUNT SETTINGS
+local eggAmount = {
+	1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+}
 local selectedEgg = "Spring Blossom"
 local eggAmount = 13
 
@@ -141,12 +144,13 @@ FarmTab:CreateDropdown({
 	end
 })
 
-FarmTab:CreateSlider({
-	Name = "Egg Amount",
-	Range = {1, 13},
-	CurrentValue = 13,
-	Callback = function(v)
-		eggAmount = v
+FarmTab:CreateDropdown({
+	Name = "Select Egg Amount",
+	Options = eggAmount,
+	CurrentOption = eggAmount,
+	Callback = function(option)
+		eggAmount = option[1] or option
+		print("Selected Egg Amount:", eggAmount)
 	end
 })
 
