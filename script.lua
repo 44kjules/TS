@@ -161,7 +161,7 @@ task.spawn(function()
 				openEggRemote:InvokeServer(selectedEgg, eggAmount)
 			end)
 		end
-		task.wait(0.01)
+		task.wait(0.1)
 	end
 end)
 
