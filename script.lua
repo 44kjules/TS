@@ -39,7 +39,7 @@ local eggList = {
 	"Spring Blossom"
 }
 
-local selectedEgg = "Azteca"
+local selectedEgg = "Spring Blossom"
 local eggAmount = 13
 
 -- =========================
