@@ -40,10 +40,9 @@ local eggList = {
 }
 -- EGG AMOUNT SETTINGS
 local eggAmount = {
-	1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+	"1", "7", "13"
 }
 local selectedEgg = "Spring Blossom"
-local eggAmount = 13
 
 -- =========================
 -- FIND REMOTES
@@ -146,7 +145,7 @@ FarmTab:CreateDropdown({
 
 FarmTab:CreateDropdown({
 	Name = "Egg Amount",
-	Options = {"1","2","3","4","5","6","7","8","9","10","11","12","13"},
+	Options = eggAmount,
 	CurrentOption = {"13"},
 	Callback = function(v)
 		eggAmount = tonumber(v[1])
