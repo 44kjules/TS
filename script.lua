@@ -210,7 +210,7 @@ task.spawn(function()
 				break
 			end
 		end
-		task.wait(1)
+		task.wait(5)
 	end
 
 	print("Totem Remote Found:", totemRemote)
@@ -221,9 +221,9 @@ task.spawn(function()
 				totemRemote:InvokeServer(
 					"TotemOfLuck",
 					{
-						X = -31486.48,
-						Y = 5808.20,
-						Z = 3577.79
+						X = 2310.85,
+						Y = 412.74,
+						Z = -101.66
 					}
 				)
 			end)
