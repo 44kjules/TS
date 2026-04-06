@@ -64,18 +64,16 @@ print("Remotes:", openEggRemote, startRemote, finishRemote, totemRemote)
 -- =========================
 
 task.spawn(function()
-	local eventsFolder = ReplicatedStorage
-		:WaitForChild("8e451043-6fff-443b-9aaa-8321310685ea")
-		:WaitForChild("Events")
+    local eventsFolder
 
-	task.wait(1)
+    repeat task.wait(0.5) until ReplicatedStorage:FindFirstDescendant("Events")
+    eventsFolder = ReplicatedStorage:FindFirstDescendant("Events")
 
-	local children = eventsFolder:GetChildren()
-	tapRemote = children[27]
+    local children = eventsFolder:GetChildren()
+    tapRemote = children[27]
 
-	print("Tap Remote:", tapRemote)
+    print("Tap Remote:", tapRemote)
 end)
-
 -- =========================
 -- UI
 -- =========================
