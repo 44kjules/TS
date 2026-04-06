@@ -66,8 +66,8 @@ print("Remotes:", openEggRemote, startRemote, finishRemote, totemRemote)
 task.spawn(function()
     local eventsFolder
 
-    repeat task.wait(0.5) until ReplicatedStorage:FindFirstChild("Events")
-    eventsFolder = ReplicatedStorage:FindFirstChild("Events")
+    repeat task.wait(0.5) until ReplicatedStorage:FindFirstChild("Events", true)
+    eventsFolder = ReplicatedStorage:FindFirstChild("Events", true)
 
     local children = eventsFolder:GetChildren()
     tapRemote = children[27]
