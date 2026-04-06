@@ -36,7 +36,9 @@ local eggList = {
 	"Azteca",
 	"Viking",
 	"Space",
-	"Spring Blossom"
+	"Spring Blossom",
+	"Painted",
+	"Dynasty",
 }
 
 local selectedEgg = "Spring Blossom"
