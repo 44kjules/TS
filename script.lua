@@ -41,7 +41,7 @@ local eggList = {
 	"Dynasty",
 }
 
-local selectedEgg = "Spring Blossom"
+local selectedEgg = "Painted" -- Default selected egg
 local eggAmountList = {"1","7","13"}
 eggAmount = 13
 -- =========================
