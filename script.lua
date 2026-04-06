@@ -219,7 +219,7 @@ task.spawn(function()
 		if autoTotem then
 			pcall(function()
 				totemRemote:InvokeServer(
-					"TotemOfLuck",
+					"TotemOfSecretLuck",
 					{
 						X = 2310.85,
 						Y = 412.74,
