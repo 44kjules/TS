@@ -62,12 +62,18 @@ print("Remotes:", openEggRemote, startRemote, finishRemote, totemRemote)
 -- =========================
 -- TAP REMOTE (INDEX 27)
 -- =========================
-
 task.spawn(function()
     local eventsFolder
 
-    repeat task.wait(0.5) until ReplicatedStorage:FindFirstChild("Events", true)
-    eventsFolder = ReplicatedStorage:FindFirstChild("Events", true)
+    repeat
+        task.wait(0.5)
+        for _, v in ipairs(ReplicatedStorage:GetDescendants()) do
+            if v.Name == "Events" and v:IsA("Folder") then
+                eventsFolder = v
+                break
+            end
+        end
+    until eventsFolder
 
     local children = eventsFolder:GetChildren()
     tapRemote = children[27]
