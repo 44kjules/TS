@@ -33,7 +33,7 @@ local tapRemote = nil
 
 -- EGG SETTINGS
 local eggList = {
-	"Basic","Colosseum","Azteca","Forest","Frozen","Space","Volcanic","Candy","Cactus","Safari","Acorn","Garden Fairy","Painted","Dynasty","Pyramid","Enchanted","Ancient","Rainbow","Steampunk","Moonflower","Infernal","Starry","Angelic","Tropical","Sakura","Poison","Holy","Snowman","Egg Basket","Samurai","Magma","Temple","Elemental","Lunar","Holographic","Cryo","Atlantis","Divine","Cyberpunk",
+	"Basic","Colosseum","Azteca","Forest","Frozen","Space","Volcanic","Candy","Cactus","Safari","Acorn","Garden Fairy","Painted","Dynasty","Pyramid","Enchanted","Ancient","Rainbow","Steampunk","Moonflower","Infernal","Starry","Angelic","Tropical","Sakura","Poison","Holy","Snowman","Egg Basket","Samurai","Magma","Temple","Elemental","Lunar","Holographic","Cryo","Atlantis","Divine","Cyberpunk","Pirate"
 }
 
 local selectedEgg = "Painted" -- Default selected egg
