@@ -175,7 +175,7 @@ task.spawn(function()
 				tapRemote:FireServer(true, nil, true)
 			end)
 		end
-		task.wait(0.02)
+		task.wait(0.1)
 	end
 end)
 
