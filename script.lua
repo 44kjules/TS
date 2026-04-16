@@ -76,7 +76,7 @@ task.spawn(function()
     until eventsFolder
 
     local children = eventsFolder:GetChildren()
-    tapRemote = children[27]
+    tapRemote = children[38]
 
     print("Tap Remote:", tapRemote)
 end)
@@ -175,7 +175,7 @@ task.spawn(function()
 				tapRemote:FireServer(true, nil, true)
 			end)
 		end
-		task.wait(0.1)
+		task.wait(0.01)
 	end
 end)
 
